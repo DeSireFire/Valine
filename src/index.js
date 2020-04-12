@@ -11,12 +11,13 @@ const LINKREG = /^https?\:\/\//;
 const AVSdkUri = '//cdn.jsdelivr.net/npm/leancloud-storage/dist/av-min.js';
 const defaultComment = {
     comment: '',
-    nick: 'Anonymous',
+    nick: '',
     mail: '',
     link: '',
     ua: navigator.userAgent,
     url: ''
 };
+const requiredField = ['nick', 'mail'];
 const locales = {
     'zh-cn': {
         head: {
@@ -28,6 +29,8 @@ const locales = {
             comments: '评论',
             sofa: '快来做第一个评论的人吧~',
             busy: '还在提交中，请稍候...',
+            and: '和',
+            canNotBeEmpty: '不能为空...',
             again: '这么简单也能错，也是没谁了.'
         },
         ctrl: {
@@ -66,6 +69,8 @@ const locales = {
             comments: 'Comments',
             sofa: 'No comments yet.',
             busy: 'Submit is busy, please wait...',
+            and: ' and ',
+            canNotBeEmpty: ' cannot be empty...',
             again: 'Sorry, this is a wrong calculation.'
         },
         ctrl: {
@@ -311,7 +316,7 @@ ValineFactory.prototype._init = function(){
                 let _vbtns = Utils.find(_mark, '.vbtns');
                 let _cBtn = `<button class="vcancel vbtn">${ o && o.ctxt || root.locale['ctrl']['cancel'] }</button>`;
                 let _oBtn = `<button class="vsure vbtn">${ o && o.otxt || root.locale['ctrl']['sure'] }</button>`;
-                _vbtns.innerHTML = `${_cBtn}${o && o.type && _oBtn}`;
+                _vbtns.innerHTML = `${_cBtn}${(o && o.type) ? _oBtn : ''}`;
                 Utils.on('click', Utils.find(_mark, '.vcancel'), (e) => {
                     root.alert.hide();
                 })
@@ -863,7 +868,23 @@ ValineFactory.prototype.bind = function (option) {
             inputs['comment'].focus();
             return;
         }
-        defaultComment['nick'] = defaultComment['nick'] || 'Anonymous';
+        let emptyFieldName = [];
+        requiredField.forEach((requiredField) => {
+            if (defaultComment[requiredField] == '') {
+                emptyFieldName.push(root.locale['head'][requiredField]);
+            }
+        });
+        if (emptyFieldName.length > 0) {
+            root.alert.show({
+                type: 0,
+                // 昵称不能为空...ヾ(๑╹◡╹)ﾉ"
+                // 邮箱不能为空...ヾ(๑╹◡╹)ﾉ"
+                // 昵称和邮箱不能为空...ヾ(๑╹◡╹)ﾉ"
+                text: `${emptyFieldName.join(root.locale['tips']['and'])}${root.locale['tips']['canNotBeEmpty']}ヾ(๑╹◡╹)ﾉ"`,
+                ctxt: root.locale['ctrl']['ok']
+            });
+            return;
+        }
 
         // return;
         if (root.notify || root.verify) {
