@@ -1107,6 +1107,7 @@
         comment: "",
         nick: "",
         mail: "",
+        mailMd5: "",
         link: "",
         ua: y.default.ua,
         url: "",
@@ -1328,10 +1329,10 @@
         var t = m[b],
           n = e.$el.find("." + b);
         v[t] = n, n.on("input change blur propertychange", function(r) {
-          e.config.enableQQ && "blur" === r.type && "nick" === t && (isNaN(n.val()) ? y.default.store.get(h.QQCacheKey) && y.default.store.get(h.QQCacheKey).nick != n.val() && (y.default.store.remove(h.QQCacheKey), E.nick = n.val(), E.mail = "", E.QQAvatar = "") : (0, _.fetchQQFn)(n.val(), function(e) {
+          e.config.enableQQ && "blur" === r.type && "nick" === t && (isNaN(n.val()) ? y.default.store.get(h.QQCacheKey) && y.default.store.get(h.QQCacheKey).nick != n.val() && (y.default.store.remove(h.QQCacheKey), E.nick = n.val(), E.mail = "", E.mailMd5 = "", E.QQAvatar = "") : (0, _.fetchQQFn)(n.val(), function(e) {
             var t = e.nick || n.val(),
               r = e.qq + "@qq.com";
-            (0, y.default)(".vnick").val(t), (0, y.default)(".vmail").val(r), E.nick = t, E.mail = r, E.QQAvatar = e.pic
+            (0, y.default)(".vnick").val(t), (0, y.default)(".vmail").val(r), E.nick = t, E.mail = r, E.mailMd5 = (0, s.default)(r), E.QQAvatar = e.pic
           })), "comment" === t ? d(n) : E[t] = y.default.escape(n.val().replace(/(^\s*)|(\s*$)/g, "")).substring(0, 40)
         })
       }();
@@ -1390,9 +1391,10 @@
             i = t.get("ua"),
             a = "";
           i && !/ja/.test(e.config.lang) && (i = y.default.detect(i), a = '<span class="vsys">' + i.browser + " " + i.version + '</span> <span class="vsys">' + i.os + " " + i.osVersion + "</span>"), "*" === e.config.path && (a = '<a href="' + t.get("url") + '" class="vsys">' + t.get("url") + "</a>");
+          var mailMd5 = t.get("mailMd5") || (0, s.default)(t.get("mail"))
           var l = t.get("link") ? /^https?\:\/\//.test(t.get("link")) ? t.get("link") : "http://" + t.get("link") : "",
             c = l ? '<a class="vnick" rel="nofollow" href="' + l + '" target="_blank" >' + t.get("nick") + "</a>" : '<span class="vnick">' + t.get("nick") + "</span>",
-            u = T.hide ? "" : e.config.enableQQ && t.get("QQAvatar") ? '<img class="vimg" src="' + t.get("QQAvatar") + '" referrerPolicy="no-referrer"/>' : '<img class="vimg" src="' + (T.cdn + (0, s.default)(t.get("mail")) + T.params) + '">',
+            u = T.hide ? "" : e.config.enableQQ && t.get("QQAvatar") ? '<img class="vimg" src="' + t.get("QQAvatar") + '" referrerPolicy="no-referrer"/>' : '<img class="vimg" src="' + (T.cdn + mailMd5 + T.params) + '">',
             d = u + '<div class="vh"><div class="vhead">' + c + " " + a + '</div><div class="vmeta"><span class="vtime" >' + (0, g.default)(t.get("insertedAt"), e.i18n) + '</span><span class="vat" data-vm-id="' + (t.get("rid") || t.id) + '" data-self-id="' + t.id + '">' + e.i18n.t("reply") + '</span></div><div class="vcontent" data-expand="' + e.i18n.t("expand") + '">' + (0, S.default)(t.get("comment")) + '</div><div class="vreply-wrapper" data-self-id="' + t.id + '"></div><div class="vquote" data-self-id="' + t.id + '"></div></div>';
           o.html(d);
           var p = o.find(".vat");
@@ -1479,7 +1481,7 @@
           }), e.$loading.show(!0);
           var t = AV.Object.extend(e.config.clazzName || "Comment"),
             n = new t;
-          if (E.url = decodeURI(e.config.path), E.insertedAt = new Date, I.rid) {
+          if (E.url = decodeURI(e.config.path), E.insertedAt = new Date, E.mailMd5 = (0, s.default)(E.mail), I.rid) {
             var r = I.pid || I.rid;
             n.set("rid", I.rid), n.set("pid", r), E.comment = j.replace("<p>", '<p><a class="at" href="#' + r + '">' + I.at + "</a> , ")
           }
