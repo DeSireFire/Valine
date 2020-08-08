@@ -1,4 +1,24 @@
 {
+  "name": "@imaegoo/valine",
+  "version": "1.4.14.1",
+  "description": "A simple comment system based on Leancloud.",
+  "main": "valine.min.js",
+  "author": "iMaeGoo <hello@imaegoo.com> (https://github.com/imaegoo)",
+  "keywords": [
+    "simple",
+    "easy-to-use",
+    "fast-and-safe",
+    "comment-system"
+  ],
+  "license": "GPL-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/imaegoo/Valine.git"
+  },
+  "homepage": "https://github.com/imaegoo/Valine",
   "dependencies": {
     "blueimp-md5": "^2.17.0",
     "leancloud-storage": "^4.6.1"

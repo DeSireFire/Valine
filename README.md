@@ -1,4 +1,4 @@
-# Valine 魔改 隐私专版
+# Valine 魔改 隐私保护版
 
 ## Instruction
 
@@ -6,7 +6,7 @@
 
 因 *发送请求中响应内容明文暴露评论者IP、邮箱等隐私内容*，博客主需要[手动更改字段权限](https://leancloud.cn/docs/data_security.html#hash723958571)，然而，如果设置 mail 客户端不可见，将不会显示评论者的 Gravatar，转为显示默认头像。
 
-该魔改版新增一个可见字段（`mailMd5`）存储 mail 的 MD5，并提供了脚本处理现有数据。
+该魔改版新增一个可见字段（`mailMd5`）存储 mail 的 MD5，并提供了脚本处理现有评论数据。
 
 ## Usage
 
@@ -34,7 +34,8 @@ node migrate.js
 ```
 ![](./img/QQ20200808-013100.png)
 
-8. 替换博客的 `Valine.min.js` 为本仓库到 `valine.js`
+8. 替换博客的 `Valine.min.js` 为本仓库到 `valine.js`，可以使用 CDN 地址：<br>
+https://cdn.jsdelivr.net/npm/@imaegoo/valine@1.4.1-4.1/valine.min.js
 9. 测试一下，头像是否正常加载，API 是否没有返回 mail 和 ip
 
 ## Difference
