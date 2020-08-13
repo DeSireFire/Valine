@@ -36,9 +36,13 @@ query.count().then((count) => {
         migratedCount++;
         const mail = comment.get('mail');
         if (mail) {
-          const mailMd5 = md5(mail);
-          comment.set('mailMd5', mailMd5);
-          console.log(`已处理：${migratedCount} 条，邮箱：${mail}，MD5：${mailMd5}`);
+          if(mailMd5 == undefined){
+            const mailMd5 = md5(mail);
+            comment.set('mailMd5', mailMd5);
+            console.log(`已处理：${migratedCount} 条，邮箱：${mail}，MD5：${mailMd5}`);
+          } else{
+            console.log(`已处理：${migratedCount} 条，邮箱：${mail}，MD5：${mailMd5}，但是数据已存在~`);
+          }
         } else {
           comment.set('mailMd5', '');
           console.log(`已处理：${migratedCount} 条，是个匿名评论～`);
