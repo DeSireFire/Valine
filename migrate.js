@@ -24,24 +24,24 @@ let migratedCount = 0;
  * 不会有谁的博客有超过 1000 评论吧？？不会吧？？？
  * 算了还是考虑一下这种情况吧 T A T
  */
-query.count().then((count) => {
+query.count().then(async (count) => {
   const pageSize = 100;
   const pageCount = Math.ceil(count / pageSize);
   for (let pageNo = 0; pageNo < pageCount; pageNo++) {
     query.ascending('createdAt');
     query.skip(pageNo * pageSize);
     query.limit(pageSize);
-    query.find().then((comments) => {
+    await query.find().then(async (comments) => {
       for (const comment of comments) {
         migratedCount++;
         const mail = comment.get('mail');
-        const mailMd5 = comment.get('mailMd5');
+        let mailMd5 = comment.get('mailMd5');
         if (mail) {
-          if(mailMd5 == undefined){
-            const mailMd5 = md5(mail);
+          if (mailMd5 === undefined) {
+            mailMd5 = md5(mail);
             comment.set('mailMd5', mailMd5);
             console.log(`已处理：${migratedCount} 条，邮箱：${mail}，MD5：${mailMd5}`);
-          } else{
+          } else {
             console.log(`已处理：${migratedCount} 条，邮箱：${mail}，MD5：${mailMd5}，但是数据已存在~`);
           }
         } else {
@@ -49,7 +49,7 @@ query.count().then((count) => {
           console.log(`已处理：${migratedCount} 条，是个匿名评论～`);
         }
       }
-      AV.Object.saveAll(comments);
+      await AV.Object.saveAll(comments);
       console.log(`已保存：第 ${pageNo + 1} 页评论数据`);
     });
   }

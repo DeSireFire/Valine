@@ -32,7 +32,9 @@ npm install
 ``` sh
 node migrate.js
 ```
-![](./img/QQ20200808-013100.png)
+![](./img/QQ20200808-013100.png)<br>
+\* 如果提示 `Error: Cannot find module 'leancloud-storage'`，请先运行 `npm install`<br>
+\* 如果提示 `Error: Too many requests. [429 POST ...]`，尝试重新运行，如果一直不解决，请提交 [issue](https://github.com/imaegoo/Valine/issues)
 
 8. 替换博客的 `Valine.min.js` 为本仓库到 `valine.js`，可以使用 CDN 地址：<br>
 https://cdn.jsdelivr.net/npm/@imaegoo/valine@1.4.1-4.1/valine.min.js
