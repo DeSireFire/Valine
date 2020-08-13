@@ -35,6 +35,7 @@ query.count().then((count) => {
       for (const comment of comments) {
         migratedCount++;
         const mail = comment.get('mail');
+        const mailMd5 = comment.get('mailMd5');
         if (mail) {
           if(mailMd5 == undefined){
             const mailMd5 = md5(mail);
